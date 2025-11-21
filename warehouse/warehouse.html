@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Inventory - Admin</title>
+    <link rel="stylesheet" href="../tlmallthing/css/login.css">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #00b4d8 0%, #48cae4 50%, #0077b6 100%);
+            background-attachment: fixed;
+        }
+        .admin-header {
+            text-align: center;
+            margin-top: 2rem;
+            color: #0077b6;
+        }
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+        }
+            .dashboard-card {
+                background: #fff;
+                border-radius: 18px;
+                box-shadow: 0 4px 24px rgba(0,180,216,0.13), 0 1.5px 6px rgba(0,0,0,0.04);
+                padding: 2.2rem 1.5rem 1.7rem 1.5rem;
+                min-width: 230px;
+                max-width: 340px;
+                flex: 1 1 230px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                margin-bottom: 1.5rem;
+                position: relative;
+                transition: transform 0.18s, box-shadow 0.18s;
+                border-top: 6px solid #00b4d8;
+            }
+            .dashboard-card:hover {
+                transform: translateY(-6px) scale(1.03);
+                box-shadow: 0 8px 32px rgba(0,180,216,0.18), 0 2px 8px rgba(0,0,0,0.07);
+            }
+            .dashboard-card .card-icon {
+                font-size: 2.5rem;
+                margin-bottom: 0.7rem;
+                display: block;
+            }
+            .dashboard-card.stock { border-top-color: #00b4d8; }
+            .dashboard-card.takenout { border-top-color: #ffb703; }
+            .dashboard-card.added { border-top-color: #43aa8b; }
+            .dashboard-card.lowstock { border-top-color: #e63946; }
+            .dashboard-card h3 {
+                margin-bottom: 0.5rem;
+                color: #222;
+                font-size: 1.35rem;
+                font-weight: 600;
+            }
+            .dashboard-card p {
+                margin-bottom: 1.2rem;
+                color: #444;
+                font-size: 1.04rem;
+            }
+            .dashboard-card button {
+                width: 100%;
+                margin: 0;
+                background: linear-gradient(90deg, #43aa8b 0%, #90be6d 100%);
+                color: #fff;
+                border: none;
+                border-radius: 12px;
+                font-size: 1.08rem;
+                font-weight: 600;
+                cursor: pointer;
+                box-shadow: 0 2px 8px rgba(67,170,139,0.12);
+                transition: background 0.2s, transform 0.2s;
+            }
+            .dashboard-card button:hover {
+                background: linear-gradient(90deg, #90be6d 0%, #43aa8b 100%);
+                transform: translateY(-2px) scale(1.03);
+            }
+        .dashboard-card h3 {
+            margin-bottom: 0.5rem;
+            color: #0077b6;
+            font-size: 1.3rem;
+        }
+        .dashboard-card p {
+            margin-bottom: 1.2rem;
+            color: #333;
+            font-size: 1rem;
+        }
+        .dashboard-card button {
+            width: 100%;
+            margin: 0;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: auto;
+            background: rgba(0,0,0,0.35);
+        }
+        .modal-content {
+            background: #fff;
+            margin: 5% auto;
+            padding: 2rem 1rem;
+            border-radius: 14px;
+            max-width: 900px;
+            width: 95vw;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            position: relative;
+        }
+        .modal-content .login-btn, .modal-content button {
+            background: linear-gradient(90deg, #43aa8b 0%, #90be6d 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.08rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(67,170,139,0.12);
+            transition: background 0.2s, transform 0.2s;
+        }
+        .modal-content .login-btn:hover, .modal-content button:hover {
+            background: linear-gradient(90deg, #90be6d 0%, #43aa8b 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .close {
+            color: #0077b6;
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .inventory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .inventory-table th, .inventory-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+        }
+        .inventory-table th {
+            background: #00b4d8;
+            color: #fff;
+        }
+        .inventory-table tr:last-child td {
+            border-bottom: none;
+        }
+        @media (max-width: 900px) {
+            .dashboard {
+                flex-direction: column;
+                gap: 1.2rem;
+                align-items: center;
+            }
+            .dashboard-card {
+                max-width: 90vw;
+            }
+        }
+        @media (max-width: 700px) {
+            .inventory-table th, .inventory-table td {
+                padding: 0.5rem;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2 class="admin-header">Warehouse Inventory (Admin View)</h2>
+    <div class="dashboard">
+                <div class="dashboard-card" style="border-top-color:#adb5bd;">
+                    <span class="card-icon" title="Back">�</span>
+                    <h3>Back</h3>
+                    <p>Return to main dashboard</p>
+                    <a href="../index.html"><button class="login-btn">Back to Home</button></a>
+                </div>
+        <div class="dashboard-card stock">
+            <span class="card-icon" title="Current Stock">📦</span>
+            <h3>Current Stock</h3>
+            <p>View all items currently in the warehouse.</p>
+            <button onclick="showModal('stock-modal')" class="login-btn">View Details</button>
+        </div>
+        <div class="dashboard-card takenout">
+            <span class="card-icon" title="Items Taken Out">📤</span>
+            <h3>Items Taken Out</h3>
+            <p>See what was taken out, by whom, and when.</p>
+            <button onclick="showModal('takenout-modal')" class="login-btn">View Details</button>
+        </div>
+        <div class="dashboard-card added">
+            <span class="card-icon" title="Items Added">➕</span>
+            <h3>Items Added</h3>
+            <p>See what was added to the warehouse and when.</p>
+            <button onclick="showModal('added-modal')" class="login-btn">View Details</button>
+        </div>
+        <div class="dashboard-card lowstock">
+            <span class="card-icon" title="Low Stock Alerts">⚠️</span>
+            <h3>Low Stock Alerts</h3>
+            <p>Products that are low and need reordering.</p>
+            <button onclick="showModal('lowstock-modal')" class="login-btn">View Details</button>
+        </div>
+    <!-- Current Stock Modal -->
+    <div id="stock-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('stock-modal')">&times;</span>
+            <h3>Current Stock</h3>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Item ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Last Updated</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>RICE-50KG</td>
+                        <td>Rice (50kg)</td>
+                        <td>Food</td>
+                        <td>120</td>
+                        <td>2025-11-20</td>
+                        <td>In Stock</td>
+                    </tr>
+                    <tr>
+                        <td>OIL-20L</td>
+                        <td>Cooking Oil (20L)</td>
+                        <td>Food</td>
+                        <td>60</td>
+                        <td>2025-11-18</td>
+                        <td>Low Stock</td>
+                    </tr>
+                    <tr>
+                        <td>DETERGENT</td>
+                        <td>Cleaning Detergent</td>
+                        <td>Cleaning</td>
+                        <td>40</td>
+                        <td>2025-11-19</td>
+                        <td>In Stock</td>
+                    </tr>
+                    <tr>
+                        <td>WATER-1L</td>
+                        <td>Mineral Water (1L)</td>
+                        <td>Beverages</td>
+                        <td>200</td>
+                        <td>2025-11-21</td>
+                        <td>In Stock</td>
+                    </tr>
+                    <tr>
+                        <td>WINE-RED</td>
+                        <td>Wine (Red)</td>
+                        <td>Beverages</td>
+                        <td>35</td>
+                        <td>2025-11-17</td>
+                        <td>In Stock</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('stock-modal')">Back</button>
+        </div>
+    </div>
+    <!-- Low Stock Modal -->
+    <div id="lowstock-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('lowstock-modal')">&times;</span>
+            <h3>Low Stock Products (Reorder Needed)</h3>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Item ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>OIL-20L</td>
+                        <td>Cooking Oil (20L)</td>
+                        <td>Food</td>
+                        <td>60</td>
+                        <td>2025-11-18</td>
+                    </tr>
+                    <!-- Add more low stock items as needed -->
+                </tbody>
+            </table>
+            <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('lowstock-modal')">Back</button>
+        </div>
+    </div>
+    </div>
+    <div id="takenout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('takenout-modal')">&times;</span>
+            <h3>Items Taken Out</h3>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Item ID</th>
+                        <th>Name</th>
+                        <th>Quantity Out</th>
+                        <th>Staff</th>
+                        <th>Date & Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>RICE-50KG</td>
+                        <td>Rice (50kg)</td>
+                        <td>10</td>
+                        <td>John Doe</td>
+                        <td>2025-11-21 09:30</td>
+                    </tr>
+                    <tr>
+                        <td>DETERGENT</td>
+                        <td>Cleaning Detergent</td>
+                        <td>5</td>
+                        <td>Jane Smith</td>
+                        <td>2025-11-20 14:10</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('takenout-modal')">Back</button>
+        </div>
+    </div>
+    <div id="added-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('added-modal')">&times;</span>
+            <h3>Items Added</h3>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Item ID</th>
+                        <th>Name</th>
+                        <th>Quantity Added</th>
+                        <th>Date & Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>OIL-20L</td>
+                        <td>Cooking Oil (20L)</td>
+                        <td>20</td>
+                        <td>2025-11-19 11:00</td>
+                    </tr>
+                    <tr>
+                        <td>WATER-1L</td>
+                        <td>Mineral Water (1L)</td>
+                        <td>50</td>
+                        <td>2025-11-21 08:45</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('added-modal')">Back</button>
+        </div>
+    </div>
+
+    <script>
+        function showModal(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+        // Close modal when clicking outside content
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(function(modal) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
