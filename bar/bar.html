@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bar Inventory - Admin</title>
+    <link rel="stylesheet" href="../tlmallthing/css/login.css">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f9844a 0%, #f9c74f 50%, #577590 100%);
+            background-attachment: fixed;
+        }
+        .admin-header {
+            text-align: center;
+            margin-top: 2rem;
+            color: #577590;
+        }
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+        }
+        .dashboard-card {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(249,135,74,0.13), 0 1.5px 6px rgba(0,0,0,0.04);
+            padding: 2.2rem 1.5rem 1.7rem 1.5rem;
+            min-width: 230px;
+            max-width: 340px;
+            flex: 1 1 230px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            transition: transform 0.18s, box-shadow 0.18s;
+            border-top: 6px solid #f9844a;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 8px 32px rgba(249,135,74,0.18), 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .dashboard-card .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.7rem;
+            display: block;
+        }
+        .dashboard-card h3 {
+            margin-bottom: 0.5rem;
+            color: #222;
+            font-size: 1.35rem;
+            font-weight: 600;
+        }
+        .dashboard-card p {
+            margin-bottom: 1.2rem;
+            color: #444;
+            font-size: 1.04rem;
+        }
+        .dashboard-card button {
+            width: 100%;
+            margin: 0;
+            background: linear-gradient(90deg, #43aa8b 0%, #90be6d 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.08rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(67,170,139,0.12);
+            transition: background 0.2s, transform 0.2s;
+        }
+        .dashboard-card button:hover {
+            background: linear-gradient(90deg, #90be6d 0%, #43aa8b 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: auto;
+            background: rgba(0,0,0,0.35);
+        }
+        .modal-content {
+            background: #fff;
+            margin: 5% auto;
+            padding: 2rem 1rem;
+            border-radius: 14px;
+            max-width: 900px;
+            width: 95vw;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            position: relative;
+        }
+        .modal-content .login-btn, .modal-content button {
+            background: linear-gradient(90deg, #43aa8b 0%, #90be6d 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.08rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(67,170,139,0.12);
+            transition: background 0.2s, transform 0.2s;
+        }
+        .modal-content .login-btn:hover, .modal-content button:hover {
+            background: linear-gradient(90deg, #90be6d 0%, #43aa8b 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .close {
+            color: #f9844a;
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .inventory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .inventory-table th, .inventory-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+        }
+        .inventory-table th {
+            background: #f9844a;
+            color: #fff;
+        }
+        .inventory-table tr:last-child td {
+            border-bottom: none;
+        }
+        @media (max-width: 900px) {
+            .dashboard {
+                flex-direction: column;
+                gap: 1.2rem;
+                align-items: center;
+            }
+            .dashboard-card {
+                max-width: 90vw;
+            }
+        }
+        @media (max-width: 700px) {
+            .inventory-table th, .inventory-table td {
+                padding: 0.5rem;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2 class="admin-header">Bar Inventory (Admin View)</h2>
+    <div class="dashboard">
+        <div class="dashboard-card" style="border-top-color:#adb5bd;">
+            <span class="card-icon" title="Logout">🚪</span>
+            <h3>Logout</h3>
+            <p>Return to login page</p>
+            <button class="login-btn" onclick="logoutToLogin()">Logout</button>
+        </div>
+        <div class="dashboard-card" style="border-top-color:#577590;">
+            <span class="card-icon" title="Bar Sales">💵</span>
+            <h3>Bar Sales Today</h3>
+            <p>Revenue for today</p>
+            <button class="login-btn" onclick="showModal('bar-sales-today-modal')">View Details</button>
+        </div>
+        <div class="dashboard-card" style="border-top-color:#43aa8b;">
+            <span class="card-icon" title="Bar Sales">📆</span>
+            <h3>Bar Sales Trimester</h3>
+            <p>Revenue for this trimester</p>
+            <button class="login-btn" onclick="showModal('bar-sales-trimester-modal')">View Details</button>
+        </div>
+        <div class="dashboard-card" style="border-top-color:#f8961e;">
+            <span class="card-icon" title="Bar Sales">📚</span>
+            <h3>Bar Sales Semester</h3>
+            <p>Revenue for this semester</p>
+            <button class="login-btn" onclick="showModal('bar-sales-semester-modal')">View Details</button>
+        </div>
+        <div class="dashboard-card" style="border-top-color:#4d908e;">
+            <span class="card-icon" title="Bar Sales">🗓️</span>
+            <h3>Bar Sales This Month</h3>
+            <p>Revenue for this month</p>
+            <button class="login-btn" onclick="showModal('bar-sales-month-modal')">View Details</button>
+        </div>
+        <div class="dashboard-card added" style="border-top-color:#90be6d;">
+            <span class="card-icon" title="Bar Items Added">🍺</span>
+            <h3>Bar Items Added</h3>
+            <p>See what bar items were added and when.</p>
+            <button onclick="showModal('bar-added-modal')" class="login-btn">View Details</button>
+        </div>
+        <div class="dashboard-card lowstock" style="border-top-color:#f94144;">
+            <span class="card-icon" title="Bar Low Stock">⚠️</span>
+            <h3>Bar Low Stock Alerts</h3>
+            <p>Bar products that are low and need reordering.</p>
+            <button onclick="showModal('bar-lowstock-modal')" class="login-btn">View Details</button>
+        </div>
+        <div class="dashboard-card" style="border-top-color:#f3722c;">
+            <span class="card-icon" title="Bar Sales">📈</span>
+            <h3>Bar Sales Year</h3>
+            <p>Revenue for this year</p>
+            <button class="login-btn" onclick="showModal('bar-sales-year-modal')">View Details</button>
+        </div>
+    </div>
+    <div id="bar-sales-week-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('bar-sales-week-modal')">&times;</span>
+            <h3>Bar Sales This Week</h3>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Amount (USD)</th>
+                        <th>Amount (FC)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Heineken Beer</td><td>120</td><td>150</td><td>135,000</td></tr>
+                    <tr><td>Red Wine</td><td>20</td><td>200</td><td>180,000</td></tr>
+                    <tr><td>Whiskey</td><td>8</td><td>400</td><td>360,000</td></tr>
+                    <tr><td>Soft Drink</td><td>150</td><td>100</td><td>90,000</td></tr>
+                </tbody>
+                <tfoot><tr><th colspan="2">Total</th><th>850</th><th>765,000</th></tr></tfoot>
+            </table>
+            <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('bar-sales-week-modal')">Back</button>
+        </div>
+    </div>
+    <div id="bar-sales-month-modal" class="modal">
+            <div id="bar-sales-trimester-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('bar-sales-trimester-modal')">&times;</span>
+                    <h3>Bar Sales Trimester</h3>
+                    <table class="inventory-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Amount (USD)</th>
+                                <th>Amount (FC)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Heineken Beer</td><td>1440</td><td>1800</td><td>1,620,000</td></tr>
+                            <tr><td>Red Wine</td><td>180</td><td>1800</td><td>1,620,000</td></tr>
+                            <tr><td>Whiskey</td><td>90</td><td>4500</td><td>4,050,000</td></tr>
+                            <tr><td>Soft Drink</td><td>1800</td><td>1200</td><td>1,080,000</td></tr>
+                        </tbody>
+                        <tfoot><tr><th colspan="2">Total</th><th>9300</th><th>8,370,000</th></tr></tfoot>
+                    </table>
+                    <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('bar-sales-trimester-modal')">Back</button>
+                </div>
+            </div>
+            <div id="bar-sales-semester-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('bar-sales-semester-modal')">&times;</span>
+                    <h3>Bar Sales Semester</h3>
+                    <table class="inventory-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Amount (USD)</th>
+                                <th>Amount (FC)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Heineken Beer</td><td>2880</td><td>3600</td><td>3,240,000</td></tr>
+                            <tr><td>Red Wine</td><td>360</td><td>3600</td><td>3,240,000</td></tr>
+                            <tr><td>Whiskey</td><td>180</td><td>9000</td><td>8,100,000</td></tr>
+                            <tr><td>Soft Drink</td><td>3600</td><td>2400</td><td>2,160,000</td></tr>
+                        </tbody>
+                        <tfoot><tr><th colspan="2">Total</th><th>18600</th><th>16,740,000</th></tr></tfoot>
+                    </table>
+                    <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('bar-sales-semester-modal')">Back</button>
+                </div>
+            </div>
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('bar-sales-month-modal')">&times;</span>
+            <h3>Bar Sales This Month</h3>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Amount (USD)</th>
+                        <th>Amount (FC)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Heineken Beer</td><td>480</td><td>600</td><td>540,000</td></tr>
+                    <tr><td>Red Wine</td><td>60</td><td>600</td><td>540,000</td></tr>
+                    <tr><td>Whiskey</td><td>30</td><td>1500</td><td>1,350,000</td></tr>
+                    <tr><td>Soft Drink</td><td>600</td><td>400</td><td>360,000</td></tr>
+                </tbody>
+                <tfoot><tr><th colspan="2">Total</th><th>3100</th><th>2,790,000</th></tr></tfoot>
+            </table>
+            <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('bar-sales-month-modal')">Back</button>
+        </div>
+    </div>
+    <div id="bar-sales-year-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('bar-sales-year-modal')">&times;</span>
+            <h3>Bar Sales Year</h3>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Amount (USD)</th>
+                        <th>Amount (FC)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Heineken Beer</td><td>5760</td><td>7200</td><td>6,480,000</td></tr>
+                    <tr><td>Red Wine</td><td>720</td><td>7200</td><td>6,480,000</td></tr>
+                    <tr><td>Whiskey</td><td>360</td><td>18000</td><td>16,200,000</td></tr>
+                    <tr><td>Soft Drink</td><td>7200</td><td>4800</td><td>4,320,000</td></tr>
+                </tbody>
+                <tfoot><tr><th colspan="2">Total</th><th>37200</th><th>33,480,000</th></tr></tfoot>
+            </table>
+            <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('bar-sales-year-modal')">Back</button>
+        </div>
+    </div>
+    <script>
+        function logoutToLogin() {
+            window.location.href = '../index.html';
+        }
+        function showModal(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(function(modal) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
