@@ -31,7 +31,7 @@ function showAdminOptions() {
             <div class="dashboard-card">
                 <h3>Rooms</h3>
                 <p>View bookings, check-ins, and room status.</p>
-                <button class="login-btn" onclick="window.location.href='rooms.html'">Go to Rooms</button>
+                <button class="login-btn" onclick="window.location.href='room/rooms.html'">Go to Rooms</button>
             </div>
             <div class="dashboard-card">
                 <h3>Warehouse</h3>
@@ -41,3 +41,4 @@ function showAdminOptions() {
         </div>
     `;
 }
+
