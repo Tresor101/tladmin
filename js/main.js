@@ -41,5 +41,3 @@ function showAdminOptions() {
         </div>
     `;
 }
-
-
