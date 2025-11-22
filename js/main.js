@@ -29,9 +29,9 @@ function showAdminOptions() {
                 <button class="login-btn" onclick="window.location.href='bar/bar.html'">Go to Bar &amp; Restaurant</button>
             </div>
             <div class="dashboard-card">
-                <h3>Rooms</h3>
+                <h3>Room</h3>
                 <p>View bookings, check-ins, and room status.</p>
-                <button class="login-btn" onclick="window.location.href='room/room.html'">Go to Rooms</button>
+                <button class="login-btn" onclick="window.location.href='room/room.html'">Go to Room</button>
             </div>
             <div class="dashboard-card">
                 <h3>Warehouse</h3>
