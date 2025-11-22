@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Room Sales - Admin</title>
+	<link rel="stylesheet" href="../css/style.css">
+	<style>
+		   .admin-header {
+			   text-align: center;
+			   margin-top: 2rem;
+			   color: #0077b6;
+			   width: 100vw;
+			   position: relative;
+			   left: 0;
+			   top: 0;
+			   z-index: 10;
+		   }
+		   body {
+			   display: block !important;
+			   justify-content: unset !important;
+			   align-items: unset !important;
+			   height: auto !important;
+		   }
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 1000;
+			left: 0;
+			top: 0;
+			width: 100vw;
+			height: 100vh;
+			overflow: auto;
+			background: rgba(0,0,0,0.35);
+		}
+		.modal-content {
+			background: #fff;
+			margin: 5% auto;
+			padding: 2rem 1rem;
+			border-radius: 14px;
+			max-width: 900px;
+			width: 95vw;
+			box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+			position: relative;
+		}
+		.modal-content .login-btn, .modal-content button {
+			background: linear-gradient(90deg, #43aa8b 0%, #90be6d 100%);
+			color: #fff;
+			border: none;
+			border-radius: 12px;
+			font-size: 1.08rem;
+			font-weight: 600;
+			cursor: pointer;
+			box-shadow: 0 2px 8px rgba(67,170,139,0.12);
+			transition: background 0.2s, transform 0.2s;
+		}
+		.modal-content .login-btn:hover, .modal-content button:hover {
+			background: linear-gradient(90deg, #90be6d 0%, #43aa8b 100%);
+			transform: translateY(-2px) scale(1.03);
+		}
+		.close {
+			color: #0077b6;
+			position: absolute;
+			top: 1rem;
+			right: 1.5rem;
+			font-size: 2rem;
+			font-weight: bold;
+			cursor: pointer;
+		}
+		.inventory-table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 1rem;
+			background: rgba(255,255,255,0.95);
+			border-radius: 12px;
+			overflow: hidden;
+		}
+		.inventory-table th, .inventory-table td {
+			padding: 1rem;
+			border-bottom: 1px solid #e0e0e0;
+			text-align: left;
+		}
+		.inventory-table th {
+			background: #0077b6;
+			color: #fff;
+		}
+		.inventory-table tr:last-child td {
+			border-bottom: none;
+		}
+	</style>
+</head>
+<body>
+	<h2 class="admin-header">Room Sales (Admin View)</h2>
+	<div class="dashboard">
+		<div class="dashboard-card" style="border-top-color:#b5179e;">
+			<span class="card-icon" title="Room Sales">🛏️</span>
+			<h3>Room Sales Today</h3>
+			<p>Orders for today</p>
+			<button class="login-btn" onclick="showModal('room-sales-today-modal')">View Details</button>
+		</div>
+		<div class="dashboard-card" style="border-top-color:#7209b7;">
+			<span class="card-icon" title="Room Sales">📅</span>
+			<h3>Room Sales This Week</h3>
+			<p>Orders for this week</p>
+			<button class="login-btn" onclick="showModal('room-sales-week-modal')">View Details</button>
+		</div>
+		<div class="dashboard-card" style="border-top-color:#560bad;">
+			<span class="card-icon" title="Room Sales">🗓️</span>
+			<h3>Room Sales This Month</h3>
+			<p>Orders for this month</p>
+			<button class="login-btn" onclick="showModal('room-sales-month-modal')">View Details</button>
+		</div>
+		<div class="dashboard-card" style="border-top-color:#480ca8;">
+			<span class="card-icon" title="Room Sales">📆</span>
+			<h3>Room Sales Trimester</h3>
+			<p>Orders for this trimester</p>
+			<button class="login-btn" onclick="showModal('room-sales-trimester-modal')">View Details</button>
+		</div>
+		<div class="dashboard-card" style="border-top-color:#3a0ca3;">
+			<span class="card-icon" title="Room Sales">📚</span>
+			<h3>Room Sales Semester</h3>
+			<p>Orders for this semester</p>
+			<button class="login-btn" onclick="showModal('room-sales-semester-modal')">View Details</button>
+		</div>
+		<div class="dashboard-card" style="border-top-color:#4361ee;">
+			<span class="card-icon" title="Room Sales">📈</span>
+			<h3>Room Sales Year</h3>
+			<p>Orders for this year</p>
+			<button class="login-btn" onclick="showModal('room-sales-year-modal')">View Details</button>
+		</div>
+	</div>
+
+	<!-- Room Sales Modals -->
+	<div id="room-sales-today-modal" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="closeModal('room-sales-today-modal')">&times;</span>
+			<h3>Room Sales Today</h3>
+			<table class="inventory-table">
+				<thead>
+					<tr>
+						<th>Order Number</th>
+						<th>Composition</th>
+						<th>Price (USD)</th>
+						<th>Price (FC)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td>R1001</td><td>Room 101, 2 nights, Breakfast</td><td>120</td><td>108,000</td></tr>
+					<tr><td>R1002</td><td>Room 202, 1 night, Dinner</td><td>80</td><td>72,000</td></tr>
+					<tr><td>R1003</td><td>Room 303, 3 nights, All meals</td><td>300</td><td>270,000</td></tr>
+				</tbody>
+			</table>
+			<button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('room-sales-today-modal')">Back</button>
+		</div>
+	</div>
+	<div id="room-sales-week-modal" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="closeModal('room-sales-week-modal')">&times;</span>
+			<h3>Room Sales This Week</h3>
+			<table class="inventory-table">
+				<thead>
+					<tr>
+						<th>Order Number</th>
+						<th>Composition</th>
+						<th>Price (USD)</th>
+						<th>Price (FC)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td>R2001</td><td>Room 101, 2 nights, Breakfast</td><td>120</td><td>108,000</td></tr>
+					<tr><td>R2002</td><td>Room 202, 1 night, Dinner</td><td>80</td><td>72,000</td></tr>
+					<tr><td>R2003</td><td>Room 303, 3 nights, All meals</td><td>300</td><td>270,000</td></tr>
+				</tbody>
+			</table>
+			<button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('room-sales-week-modal')">Back</button>
+		</div>
+	</div>
+	<div id="room-sales-month-modal" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="closeModal('room-sales-month-modal')">&times;</span>
+			<h3>Room Sales This Month</h3>
+			<table class="inventory-table">
+				<thead>
+					<tr>
+						<th>Order Number</th>
+						<th>Composition</th>
+						<th>Price (USD)</th>
+						<th>Price (FC)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td>R3001</td><td>Room 101, 2 nights, Breakfast</td><td>120</td><td>108,000</td></tr>
+					<tr><td>R3002</td><td>Room 202, 1 night, Dinner</td><td>80</td><td>72,000</td></tr>
+					<tr><td>R3003</td><td>Room 303, 3 nights, All meals</td><td>300</td><td>270,000</td></tr>
+				</tbody>
+			</table>
+			<button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('room-sales-month-modal')">Back</button>
+		</div>
+	</div>
+	<div id="room-sales-trimester-modal" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="closeModal('room-sales-trimester-modal')">&times;</span>
+			<h3>Room Sales This Trimester</h3>
+			<table class="inventory-table">
+				<thead>
+					<tr>
+						<th>Order Number</th>
+						<th>Composition</th>
+						<th>Price (USD)</th>
+						<th>Price (FC)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td>R4001</td><td>Room 101, 2 nights, Breakfast</td><td>120</td><td>108,000</td></tr>
+					<tr><td>R4002</td><td>Room 202, 1 night, Dinner</td><td>80</td><td>72,000</td></tr>
+					<tr><td>R4003</td><td>Room 303, 3 nights, All meals</td><td>300</td><td>270,000</td></tr>
+				</tbody>
+			</table>
+			<button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('room-sales-trimester-modal')">Back</button>
+		</div>
+	</div>
+	<div id="room-sales-semester-modal" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="closeModal('room-sales-semester-modal')">&times;</span>
+			<h3>Room Sales This Semester</h3>
+			<table class="inventory-table">
+				<thead>
+					<tr>
+						<th>Order Number</th>
+						<th>Composition</th>
+						<th>Price (USD)</th>
+						<th>Price (FC)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td>R5001</td><td>Room 101, 2 nights, Breakfast</td><td>120</td><td>108,000</td></tr>
+					<tr><td>R5002</td><td>Room 202, 1 night, Dinner</td><td>80</td><td>72,000</td></tr>
+					<tr><td>R5003</td><td>Room 303, 3 nights, All meals</td><td>300</td><td>270,000</td></tr>
+				</tbody>
+			</table>
+			<button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('room-sales-semester-modal')">Back</button>
+		</div>
+	</div>
+	<div id="room-sales-year-modal" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="closeModal('room-sales-year-modal')">&times;</span>
+			<h3>Room Sales This Year</h3>
+			<table class="inventory-table">
+				<thead>
+					<tr>
+						<th>Order Number</th>
+						<th>Composition</th>
+						<th>Price (USD)</th>
+						<th>Price (FC)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td>R6001</td><td>Room 101, 2 nights, Breakfast</td><td>120</td><td>108,000</td></tr>
+					<tr><td>R6002</td><td>Room 202, 1 night, Dinner</td><td>80</td><td>72,000</td></tr>
+					<tr><td>R6003</td><td>Room 303, 3 nights, All meals</td><td>300</td><td>270,000</td></tr>
+				</tbody>
+			</table>
+			<button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('room-sales-year-modal')">Back</button>
+		</div>
+	</div>
+
+	<script>
+		function showModal(id) {
+			document.getElementById(id).style.display = 'block';
+		}
+		function closeModal(id) {
+			document.getElementById(id).style.display = 'none';
+		}
+		window.onclick = function(event) {
+			const modals = document.querySelectorAll('.modal');
+			modals.forEach(function(modal) {
+				if (event.target === modal) {
+					modal.style.display = 'none';
+				}
+			});
+		}
+	</script>
+</body>
+</html>
