@@ -30,9 +30,9 @@
             border-radius: 18px;
             box-shadow: 0 4px 24px rgba(249,135,74,0.13), 0 1.5px 6px rgba(0,0,0,0.04);
             padding: 2.2rem 1.5rem 1.7rem 1.5rem;
-            min-width: 230px;
-            max-width: 340px;
-            flex: 1 1 230px;
+            width: 270px;
+            min-width: 270px;
+            max-width: 270px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -178,6 +178,18 @@
             <p>Revenue for today</p>
             <button class="login-btn" onclick="showModal('bar-sales-today-modal')">View Details</button>
         </div>
+        <div class="dashboard-card" style="border-top-color:#277da1;">
+            <span class="card-icon" title="Bar Sales Week">📅</span>
+            <h3>Bar Sales This Week</h3>
+            <p>Revenue for this week</p>
+            <button class="login-btn" onclick="showModal('bar-sales-week-modal')">View Details</button>
+        </div>
+        <div class="dashboard-card" style="border-top-color:#4d908e;">
+            <span class="card-icon" title="Bar Sales">🗓️</span>
+            <h3>Bar Sales This Month</h3>
+            <p>Revenue for this month</p>
+            <button class="login-btn" onclick="showModal('bar-sales-month-modal')">View Details</button>
+        </div>
         <div class="dashboard-card" style="border-top-color:#43aa8b;">
             <span class="card-icon" title="Bar Sales">📆</span>
             <h3>Bar Sales Trimester</h3>
@@ -190,29 +202,182 @@
             <p>Revenue for this semester</p>
             <button class="login-btn" onclick="showModal('bar-sales-semester-modal')">View Details</button>
         </div>
-        <div class="dashboard-card" style="border-top-color:#4d908e;">
-            <span class="card-icon" title="Bar Sales">🗓️</span>
-            <h3>Bar Sales This Month</h3>
-            <p>Revenue for this month</p>
-            <button class="login-btn" onclick="showModal('bar-sales-month-modal')">View Details</button>
-        </div>
-        <div class="dashboard-card added" style="border-top-color:#90be6d;">
-            <span class="card-icon" title="Bar Items Added">🍺</span>
-            <h3>Bar Items Added</h3>
-            <p>See what bar items were added and when.</p>
-            <button onclick="showModal('bar-added-modal')" class="login-btn">View Details</button>
-        </div>
-        <div class="dashboard-card lowstock" style="border-top-color:#f94144;">
-            <span class="card-icon" title="Bar Low Stock">⚠️</span>
-            <h3>Bar Low Stock Alerts</h3>
-            <p>Bar products that are low and need reordering.</p>
-            <button onclick="showModal('bar-lowstock-modal')" class="login-btn">View Details</button>
-        </div>
         <div class="dashboard-card" style="border-top-color:#f3722c;">
             <span class="card-icon" title="Bar Sales">📈</span>
             <h3>Bar Sales Year</h3>
             <p>Revenue for this year</p>
             <button class="login-btn" onclick="showModal('bar-sales-year-modal')">View Details</button>
+        </div>
+
+        <!-- Restaurant Sales Cards -->
+        <div class="dashboard-card" style="border-top-color:#b5179e;">
+            <span class="card-icon" title="Restaurant Sales">🍽️</span>
+            <h3>Restaurant Sales Today</h3>
+            <p>Orders for today</p>
+            <button class="login-btn" onclick="showModal('rest-sales-today-modal')">View Details</button>
+        </div>
+        <div class="dashboard-card" style="border-top-color:#7209b7;">
+            <span class="card-icon" title="Restaurant Sales">📅</span>
+            <h3>Restaurant Sales This Week</h3>
+            <p>Orders for this week</p>
+            <button class="login-btn" onclick="showModal('rest-sales-week-modal')">View Details</button>
+        </div>
+        <div class="dashboard-card" style="border-top-color:#560bad;">
+            <span class="card-icon" title="Restaurant Sales">🗓️</span>
+            <h3>Restaurant Sales This Month</h3>
+            <p>Orders for this month</p>
+            <button class="login-btn" onclick="showModal('rest-sales-month-modal')">View Details</button>
+        </div>
+        <div class="dashboard-card" style="border-top-color:#480ca8;">
+            <span class="card-icon" title="Restaurant Sales">📆</span>
+            <h3>Restaurant Sales Trimester</h3>
+            <p>Orders for this trimester</p>
+            <button class="login-btn" onclick="showModal('rest-sales-trimester-modal')">View Details</button>
+        </div>
+        <div class="dashboard-card" style="border-top-color:#3a0ca3;">
+            <span class="card-icon" title="Restaurant Sales">📚</span>
+            <h3>Restaurant Sales Semester</h3>
+            <p>Orders for this semester</p>
+            <button class="login-btn" onclick="showModal('rest-sales-semester-modal')">View Details</button>
+        </div>
+        <div class="dashboard-card" style="border-top-color:#4361ee;">
+            <span class="card-icon" title="Restaurant Sales">📈</span>
+            <h3>Restaurant Sales Year</h3>
+            <p>Orders for this year</p>
+            <button class="login-btn" onclick="showModal('rest-sales-year-modal')">View Details</button>
+        </div>
+        <!-- Restaurant Sales Modals -->
+        <div id="rest-sales-today-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('rest-sales-today-modal')">&times;</span>
+                <h3>Restaurant Sales Today</h3>
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Composition</th>
+                            <th>Price (USD)</th>
+                            <th>Price (FC)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1001</td><td>Chicken, Rice, Salad</td><td>12</td><td>10,800</td></tr>
+                        <tr><td>1002</td><td>Fish, Chips</td><td>10</td><td>9,000</td></tr>
+                        <tr><td>1003</td><td>Beef, Potatoes</td><td>15</td><td>13,500</td></tr>
+                    </tbody>
+                </table>
+                <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('rest-sales-today-modal')">Back</button>
+            </div>
+        </div>
+        <div id="rest-sales-week-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('rest-sales-week-modal')">&times;</span>
+                <h3>Restaurant Sales This Week</h3>
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Composition</th>
+                            <th>Price (USD)</th>
+                            <th>Price (FC)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2001</td><td>Chicken, Rice, Salad</td><td>12</td><td>10,800</td></tr>
+                        <tr><td>2002</td><td>Fish, Chips</td><td>10</td><td>9,000</td></tr>
+                        <tr><td>2003</td><td>Beef, Potatoes</td><td>15</td><td>13,500</td></tr>
+                    </tbody>
+                </table>
+                <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('rest-sales-week-modal')">Back</button>
+            </div>
+        </div>
+        <div id="rest-sales-month-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('rest-sales-month-modal')">&times;</span>
+                <h3>Restaurant Sales This Month</h3>
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Composition</th>
+                            <th>Price (USD)</th>
+                            <th>Price (FC)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>3001</td><td>Chicken, Rice, Salad</td><td>12</td><td>10,800</td></tr>
+                        <tr><td>3002</td><td>Fish, Chips</td><td>10</td><td>9,000</td></tr>
+                        <tr><td>3003</td><td>Beef, Potatoes</td><td>15</td><td>13,500</td></tr>
+                    </tbody>
+                </table>
+                <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('rest-sales-month-modal')">Back</button>
+            </div>
+        </div>
+        <div id="rest-sales-trimester-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('rest-sales-trimester-modal')">&times;</span>
+                <h3>Restaurant Sales This Trimester</h3>
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Composition</th>
+                            <th>Price (USD)</th>
+                            <th>Price (FC)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>4001</td><td>Chicken, Rice, Salad</td><td>12</td><td>10,800</td></tr>
+                        <tr><td>4002</td><td>Fish, Chips</td><td>10</td><td>9,000</td></tr>
+                        <tr><td>4003</td><td>Beef, Potatoes</td><td>15</td><td>13,500</td></tr>
+                    </tbody>
+                </table>
+                <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('rest-sales-trimester-modal')">Back</button>
+            </div>
+        </div>
+        <div id="rest-sales-semester-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('rest-sales-semester-modal')">&times;</span>
+                <h3>Restaurant Sales This Semester</h3>
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Composition</th>
+                            <th>Price (USD)</th>
+                            <th>Price (FC)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>5001</td><td>Chicken, Rice, Salad</td><td>12</td><td>10,800</td></tr>
+                        <tr><td>5002</td><td>Fish, Chips</td><td>10</td><td>9,000</td></tr>
+                        <tr><td>5003</td><td>Beef, Potatoes</td><td>15</td><td>13,500</td></tr>
+                    </tbody>
+                </table>
+                <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('rest-sales-semester-modal')">Back</button>
+            </div>
+        </div>
+        <div id="rest-sales-year-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('rest-sales-year-modal')">&times;</span>
+                <h3>Restaurant Sales This Year</h3>
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Composition</th>
+                            <th>Price (USD)</th>
+                            <th>Price (FC)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>6001</td><td>Chicken, Rice, Salad</td><td>12</td><td>10,800</td></tr>
+                        <tr><td>6002</td><td>Fish, Chips</td><td>10</td><td>9,000</td></tr>
+                        <tr><td>6003</td><td>Beef, Potatoes</td><td>15</td><td>13,500</td></tr>
+                    </tbody>
+                </table>
+                <button class="login-btn" style="margin-top:1.5rem;" onclick="closeModal('rest-sales-year-modal')">Back</button>
+            </div>
         </div>
     </div>
     <div id="bar-sales-week-modal" class="modal">
